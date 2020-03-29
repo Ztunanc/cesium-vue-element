@@ -23,7 +23,7 @@ localhost:8080
 
 # 开发记录
 ## 2020.03.29 
-+ 已完成
++ 已完成:
 1. 支持最新版本的Cesium，使用require引入Cesium并设为全局变量，在子组件中可通过Cesium.**方式使用；
 2. 在cesiumViewer组件中定义viewer并设为全局对象；
 3. 安装element-ui并设置局部引用，创建viewerSeting组件测试。
