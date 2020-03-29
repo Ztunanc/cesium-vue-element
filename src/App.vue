@@ -2,7 +2,7 @@
   <div id="app">
     <!-- cesiumViewer,里面定义全局viewer，因此必须第一个引用 -->
     <router-view ref="cesiumContainer"></router-view>
-    <router-view ref="viewerSeting" name="viewerSeting"></router-view>
+    <router-view name="viewerSetting"></router-view>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
 
 <style>
 html, body, #cesiumContainer {
-          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+  width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
  }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

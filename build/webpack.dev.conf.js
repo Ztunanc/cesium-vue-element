@@ -9,11 +9,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
-// 定义Cesium源码路径，不同于webpack.base.conf.js中的设置
-const cesiumSource = 'node_modules/cesium/Source';
-// 定义Cesium Workers路径
-const cesiumWorkers = '../Build/Cesium/Workers'; 
 
+// 定义Cesium源码路径，不同于webpack.base.conf.js中的设置
+const cesiumSource = 'node_modules/cesium/Source'
+// 定义Cesium Workers路径
+const cesiumWorkers = '../Build/Cesium/Workers'
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -51,8 +51,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env'),
-      'CESIUM_BASE_URL': JSON.stringify('')
+      'process.env': require('../config/dev.env')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
@@ -61,16 +60,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      favicon: path.resolve('favicon.ico'),
       inject: true
-    }),
-    // Copy Cesium Assets, Widgets, and Workers to a static directory
-    new CopyWebpackPlugin([ { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' } ]),
-    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Assets'), to: 'Assets' } ]),
-    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' } ]), 
-    new webpack.DefinePlugin({
-      // Define relative base path in cesium for loading assets
-      CESIUM_BASE_URL: JSON.stringify('')
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
@@ -79,7 +69,16 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: config.dev.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    // Copy Cesium Assets, Widgets, and Workers to a static directory
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Assets'), to: 'Assets' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'ThirdParty/Workers'), to: 'ThirdParty/Workers' } ]),
+    new webpack.DefinePlugin({
+      // Define relative base path in cesium for loading assets
+      CESIUM_BASE_URL: JSON.stringify('')
+    }),
   ]
 })
 

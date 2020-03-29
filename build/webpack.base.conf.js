@@ -3,8 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-const cesiumSource = '../node_modules/cesium/Source';
 
+const cesiumSource = '../node_modules/cesium/Source'
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -23,19 +23,19 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath,
-      sourcePrefix: '', //让webpack可以正确处理多行字符串
+      sourcePrefix:'',  //让webpack可以正确处理多行字符串
   },
-  amd: {
-        // Cesium 是AMD模块开发，该设置可以让webpack友好的支持require方式添加Cesium
-        toUrlUndefined: true
-    },
+  amd:{
+    // Cesium 是AMD模块开发，该设置可以让webpack友好的支持require方式添加Cesium
+    toUrlUndefined:true,
+  },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       // cesium module name
-       'cesium': path.resolve(__dirname, cesiumSource)
+      'cesium': path.resolve(__dirname, cesiumSource),
     }
   },
   module: {
@@ -49,20 +49,6 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
-      },
-      {
-        //Strip cesium pragmas 删除编译指示
-        test: /\.js$/,
-        enforce: 'pre',
-        include: path.resolve(__dirname, cesiumSource),
-        use: [{
-          loader: 'strip-pragma-loader',
-          options: {
-            pragmas: {
-              debug: false
-            }
-          }
-        }]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -89,8 +75,9 @@ module.exports = {
         }
       }
     ],
-    unknownContextCritical: false  //屏蔽警告
-    // unknownContextRegExp: /^.\/.*$/  
+    //不让webpack打印载入特定库时候发出警告
+    unknownContextCritical:false,
+    // unknownContextRegExp: /^.\/.*$/,   //这个很多都推荐了，但是实测的时候发现会报错，先不用
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

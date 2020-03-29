@@ -10,10 +10,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 // 定义Cesium源码路径，不同于webpack.base.conf.js中的设置
-const cesiumSource = 'node_modules/cesium/Source';
+const cesiumSource = 'node_modules/cesium/Source'
 // 定义Cesium Workers路径
-const cesiumWorkers = '../Build/Cesium/Workers';
+const cesiumWorkers = '../Build/Cesium/Workers'
 
 const env = require('../config/prod.env')
 
@@ -25,7 +26,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
-  devtool: config.build.productionSourceMap ? config.build.devtool : false,
+  devtool: config.build.productionSourceMap ? config.build.devtool : true,
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
@@ -34,8 +35,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env,
-      'CESIUM_BASE_URL': JSON.stringify('static') 
+      'process.env': env
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
@@ -68,7 +68,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
-      favicon: path.resolve('favicon.ico'),
       inject: true,
       minify: {
         removeComments: true,
@@ -79,21 +78,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
-    }),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ]),
-    new CopyWebpackPlugin([ { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' } ]),
-    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Assets'), to: 'Assets' } ]),
-    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' } ]), 
-    new webpack.DefinePlugin({
-      // Define relative base path in cesium for loading assets
-    //定义 Cesium 从哪里加载资源，如果使用默认的''，却变成了绝对路径了，所以这里使用'./',使用相对路径
-      CESIUM_BASE_URL: JSON.stringify('./')
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -108,7 +92,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           module.resource &&
           /\.js$/.test(module.resource) &&
           module.resource.indexOf(
-            path.join(__dirname, '../node_modules') 
+            path.join(__dirname, '../node_modules')
           ) === 0
         )
       }
@@ -128,10 +112,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       children: true,
       minChunks: 3
     }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //       name: 'cesium',
-    //       minChunks: module => module.context && module.context.indexOf('cesium') !== -1
-    // }),
+
     // copy custom static assets
     new CopyWebpackPlugin([
       {
@@ -139,7 +120,16 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Assets'), to: 'Assets' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'ThirdParty/Workers'), to: 'ThirdParty/Workers' } ]),
+    new webpack.DefinePlugin({
+      // Define relative base path in cesium for loading assets
+    //定义 Cesium 从哪里加载资源，如果使用默认的''，却变成了绝对路径了，所以这里使用'./',使用相对路径
+      CESIUM_BASE_URL: JSON.stringify('./')
+    }),
   ]
 })
 
