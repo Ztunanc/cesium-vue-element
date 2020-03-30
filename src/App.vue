@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <!-- cesiumViewer,里面定义全局viewer，因此必须第一个引用 -->
-    <router-view ref="cesiumContainer"></router-view>
-    <router-view name="viewerSetting"></router-view>
+    <router-view ref="navbar"></router-view>
   </div>
 </template>
 
@@ -13,7 +11,7 @@ export default {
 </script>
 
 <style>
-html, body, #cesiumContainer {
+html, body{
   width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
  }
 #app {
